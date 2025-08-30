@@ -8,11 +8,11 @@ const Copyright = () => {
 
     return (
         <footer>
-            <div className="container">
+            <div className="container-fluid bg-primary">
                 <Row>
                     <Col span={24} className="text-center">
-                        <Paragraph>
-                            &copy; {new Date().getFullYear()} All Rights Reserved.
+                        <Paragraph className='text-white mb-0  p-2'>
+                            &copy; {new Date().getFullYear()} All Rights Reserved
                         </Paragraph>
                     </Col>
                 </Row>

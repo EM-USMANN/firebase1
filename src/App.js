@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.scss';
+import 'bootstrap'
+
+import Routes from './pages/Routes';
 
 function App() {
   return (
     <>
 
-      <h1>App</h1>
-
+      <Routes />
     </>
   );
 }
