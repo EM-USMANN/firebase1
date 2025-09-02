@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Col, Form, Input, Row, Typography } from 'antd'
+import { Alert, Button, Col, Form, Input, Row, Typography } from 'antd'
+import { auth } from '../../../config/firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 const { Title } = Typography
 
@@ -17,19 +19,35 @@ const Register = () => {
 
         let { firstName, lastName, email, password, confirmPassword } = state
 
-        const userData = { uid: "", firstName, lastName, email, password, confirmPassword }
-
-        setIsProcssing(true)
-
-        createDocument(userData)
-
         // firstName = firstName.trim()
         // lastName = lastName.trim()
         // password = password.trim()
         // confirmPassword = confirmPassword.trim()
         // if (!firstName || !lastName || !email || !password || !confirmPassword) return alert('All fields are required!')
-        // if (password !== confirmPassword) return alert('Password and Confirm Password must be same!')
-        // if (password.length < 6) return alert('Password must be at least 6 characters long!')
+        if (password !== confirmPassword) return alert('Password does not match!')
+        if (password.length < 6) return alert('Password must be at least 6 characters long!')
+
+        const userData = { firstName, lastName, email, password, confirmPassword }
+
+        setIsProcssing(true)
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                createDocument({ ...userData, uid: user.uid })
+                // ...
+            })
+            .catch((error) => {
+                alert('something went wrong!')
+                console.error(error)
+                setIsProcssing(false)
+                // ..
+            });
+
+
+
+
     }
 
     const createDocument = userData => {
@@ -37,7 +55,7 @@ const Register = () => {
 
         setTimeout(() => {
             setIsProcssing(false)
-        }, 2000)
+        }, 1000)
     }
 
 
@@ -59,17 +77,17 @@ const Register = () => {
                                 <Input type='text' size='large' placeholder='Enter Your Last Name' name='lastName' onChange={handleChange} />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} md={12}>
+                        <Col xs={24}>
                             <Form.Item label="Email" required>
                                 <Input type='email' size='large' placeholder='Enter Your Email' name='email' onChange={handleChange} />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} md={12}>
+                        <Col xs={24}>
                             <Form.Item label="Password" required>
                                 <Input.Password size='large' placeholder='Enter Your Password' name='password' onChange={handleChange} />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} md={12}>
+                        <Col xs={24}>
                             <Form.Item label="Confirm Password" required>
                                 <Input.Password size='large' placeholder='Enter Your Password Again' name='confirmPassword' onChange={handleChange} />
                             </Form.Item>
