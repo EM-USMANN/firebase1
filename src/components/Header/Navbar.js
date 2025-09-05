@@ -1,7 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAuthContext } from '../../context/Auth'
 
 const Navbar = () => {
+
+    const { isAuth } = useAuthContext()
+    console.log('isAuth', isAuth)
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
